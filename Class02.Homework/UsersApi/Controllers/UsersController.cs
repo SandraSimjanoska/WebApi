@@ -15,25 +15,25 @@ namespace UsersApi.Controllers
         }
 
         [HttpGet("{index}")]
-        public ActionResult<string> GetUserById(int index)
+        public ActionResult<string> GetUserByIndex(int index)
         {
             try
             {
                 if (index < 0)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest,"The index has negative value");
+                    return BadRequest("The index cannot be negative.");
                 }
 
                 if (index >= StaticDb.Users.Count)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound,$"There is no resourse on index {index}");
+                    return NotFound($"There is no resource at index {index}");
                 }
 
-                return StatusCode(StatusCodes.Status200OK, StaticDb.Users[index -1]);
+                return Ok(StaticDb.Users[index]);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,"An error occurred. Contact The admin");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred. Contact the admin.");
             }
         }
     }
